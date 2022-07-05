@@ -31,36 +31,16 @@ struct ContentView: View {
     }
     
     var CardViewCollection: some View {
-        GeometryReader { geo in
-            ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVGrid(columns: adaptiveGird) {
                 if selectedTheme.isEmpty {
-                    let random = Int.random(in: 4...Vehicles.count)
-                    let w = widthThatBestFits(cardCount: random, width: geo.size.width)
-                    LazyVGrid(columns: Array(repeating: .init(.adaptive(minimum: w, maximum: .infinity)), count: 1)) {
-                        buildCardView(themeList: Vehicles, random: random)
-                    }
+                    buildCardView(themeList: Vehicles, random: Int.random(in: 4...Vehicles.count))
                 } else {
-                    let w = widthThatBestFits(cardCount: random, width: geo.size.width)
-                    LazyVGrid(columns: Array(repeating: .init(.adaptive(minimum: w, maximum: .infinity)), count: 1)) {
-                        buildCardView(themeList: selectedTheme, random: random)
-                    }
+                    buildCardView(themeList: selectedTheme, random: random)
                 }
             }
-            .foregroundColor(.red)
         }
-        
-    }
-    
-    func widthThatBestFits(cardCount: Int, width: CGFloat) -> CGFloat {
-        if cardCount == 4 {
-            return CGFloat((width) * (CGFloat(cardCount) / 10.0))
-        } else if cardCount <= 10 {
-            return CGFloat((width) * (CGFloat(cardCount) / 10.0))
-        } else if cardCount <= 20 {
-            return CGFloat((width) * (CGFloat(cardCount) / 10.0))
-        } else {
-            return CGFloat((width) * (CGFloat(cardCount) / 10.0))
-        }
+        .foregroundColor(.red)
     }
     
     @ViewBuilder
